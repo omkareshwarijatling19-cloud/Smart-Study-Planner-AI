@@ -24,3 +24,23 @@ Development Setup
 - Pushing project updates
 
 I practised version control using Git and GitHub.
+
+## Project Folder Structure
+
+- frontend: User interface of the application.
+- backend: Python backend logic.
+- docs: Project documentation and architecture.
+- tests: Testing the application.
+
+## Main Project Modules
+
+1. Student Input
+2. Task Management
+3. Schedule Generator
+4. AI Recommendation
+5. Progress Tracking
+6. Dashboard
+
+## Project Workflow
+
+Student enters study details → System processes the input → AI recommends study priorities → Schedule is generated → Student views the timetable and tracks progress.
