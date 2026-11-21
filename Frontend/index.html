@@ -7,56 +7,134 @@
     <title>Smart Study Planner AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="container">
+    <div class="dashboard">
 
-        <header>
-            <h1>Smart Study Planner AI</h1>
-            <p>Plan your studies. Achieve your goals.</p>
-        </header>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span>✦</span> Study Planner AI
+            </div>
 
-        <section class="task-section">
+            <p class="menu-title">MENU</p>
 
-            <h2>Add Your Study Task</h2>
+            <nav>
+                <a href="#overview" class="nav-link active">🏠 Dashboard</a>
+                <a href="#tasks" class="nav-link">📝 My Tasks</a>
+                <a href="#progress" class="nav-link">📊 Progress</a>
+            </nav>
 
-            <form id="taskForm">
+            <div class="sidebar-bottom">
+                <p>Study smart.</p>
+                <p>Achieve more. ✨</p>
+            </div>
+        </aside>
 
-                <input
-                    type="text"
-                    id="taskInput"
-                    placeholder="Enter your study task"
-                    required
-                >
+        <!-- Main Content -->
+        <main class="main-content">
 
-                <input
-                    type="date"
-                    id="taskDate"
-                    required
-                >
+            <!-- Welcome -->
+            <section class="welcome" id="overview">
+                <div>
+                    <p class="greeting">YOUR PERSONAL STUDY SPACE</p>
+                    <h1>Welcome back, Student! 👋</h1>
+                    <p>Let's make today productive.</p>
+                </div>
 
-                <select id="taskPriority">
-                    <option value="High">High Priority</option>
-                    <option value="Medium" selected>Medium Priority</option>
-                    <option value="Low">Low Priority</option>
-                </select>
+                <div class="date-box" id="todayDate"></div>
+            </section>
 
-                <button type="submit">Add Task</button>
+            <!-- Summary Cards -->
+            <section class="stats">
 
-            </form>
+                <div class="stat-card">
+                    <div class="stat-icon purple">📚</div>
+                    <p>Total Tasks</p>
+                    <h2 id="totalTasks">0</h2>
+                </div>
 
-        </section>
+                <div class="stat-card">
+                    <div class="stat-icon green">✅</div>
+                    <p>Completed</p>
+                    <h2 id="completedTasks">0</h2>
+                </div>
 
-        <section class="task-list-section">
+                <div class="stat-card">
+                    <div class="stat-icon orange">⏳</div>
+                    <p>Pending</p>
+                    <h2 id="pendingTasks">0</h2>
+                </div>
 
-            <h2>My Study Tasks</h2>
+            </section>
 
-            <div id="taskList"></div>
+            <!-- Tasks -->
+            <section class="content-card" id="tasks">
 
-        </section>
+                <div class="section-heading">
+                    <div>
+                        <h2>My Study Tasks</h2>
+                        <p>Organize your learning activities.</p>
+                    </div>
+                </div>
 
+                <form id="taskForm" class="task-form">
+
+                    <input
+                        type="text"
+                        id="taskInput"
+                        placeholder="What do you need to study?"
+                        required
+                    >
+
+                    <input
+                        type="date"
+                        id="taskDate"
+                        required
+                    >
+
+                    <select id="taskPriority">
+                        <option value="High">High Priority</option>
+                        <option value="Medium" selected>Medium Priority</option>
+                        <option value="Low">Low Priority</option>
+                    </select>
+
+                    <button type="submit" class="add-button">
+                        + Add Task
+                    </button>
+
+                </form>
+
+                <div id="taskList" class="task-list"></div>
+
+            </section>
+
+            <!-- Progress -->
+            <section class="content-card progress-card" id="progress">
+
+                <h2>Your Study Progress</h2>
+                <p>Keep going! Every small step matters.</p>
+
+                <div class="progress-info">
+                    <span>Tasks completed</span>
+                    <strong id="progressPercent">0%</strong>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar" class="progress-fill"></div>
+                </div>
+
+            </section>
+
+            <footer>
+                Made with ❤️ for smarter learning.
+            </footer>
+
+        </main>
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
