@@ -179,3 +179,155 @@ function updateDashboard() {
 
 // Load saved tasks
 displayTasks();
+
+// ================================
+// DAY 6 - STUDY SCHEDULE FEATURE
+// ================================
+
+const scheduleForm = document.getElementById("scheduleForm");
+const subjectInput = document.getElementById("subjectInput");
+const topicInput = document.getElementById("topicInput");
+const studyDate = document.getElementById("studyDate");
+const studyDuration = document.getElementById("studyDuration");
+const scheduleList = document.getElementById("scheduleList");
+const totalStudyTime = document.getElementById("totalStudyTime");
+
+// Load saved study sessions
+let studySessions = JSON.parse(
+    localStorage.getItem("studySessions") || "[]"
+);
+
+// Save study sessions
+function saveStudySessions() {
+    localStorage.setItem(
+        "studySessions",
+        JSON.stringify(studySessions)
+    );
+}
+
+// Add a study session
+scheduleForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const session = {
+        id: Date.now(),
+        subject: subjectInput.value.trim(),
+        topic: topicInput.value.trim(),
+        date: studyDate.value,
+        duration: Number(studyDuration.value)
+    };
+
+    if (
+        !session.subject ||
+        !session.topic ||
+        !session.date ||
+        !Number.isFinite(session.duration) ||
+        session.duration <= 0
+    ) {
+        alert("Please enter valid study session details.");
+        return;
+    }
+
+    studySessions.push(session);
+
+    saveStudySessions();
+    displayStudySessions();
+
+    scheduleForm.reset();
+});
+
+// Display study sessions
+function displayStudySessions() {
+
+    scheduleList.innerHTML = "";
+
+    if (studySessions.length === 0) {
+        scheduleList.innerHTML =
+            '<p class="empty-message">No study sessions planned yet.</p>';
+    }
+
+    studySessions.forEach(function(session) {
+
+        const sessionDiv = document.createElement("div");
+
+        sessionDiv.className = "task-item";
+
+        sessionDiv.innerHTML = `
+            <div>
+                <strong class="task-name">
+                    ${escapeHTML(session.subject)}
+                </strong>
+
+                <p class="task-details">
+                    Topic: ${escapeHTML(session.topic)}
+                </p>
+
+                <p class="task-details">
+                    Date: ${escapeHTML(session.date)}
+                </p>
+
+                <p class="task-details">
+                    Duration: ${session.duration} minutes
+                </p>
+            </div>
+
+            <div class="task-actions">
+                <button
+                    class="delete-btn"
+                    data-session-id="${session.id}">
+                    Delete
+                </button>
+            </div>
+        `;
+
+        scheduleList.appendChild(sessionDiv);
+
+    });
+
+    updateStudyTime();
+}
+
+// Delete a study session
+scheduleList.addEventListener("click", function(event) {
+
+    const button = event.target.closest("button[data-session-id]");
+
+    if (!button) return;
+
+    const id = Number(button.dataset.sessionId);
+
+    studySessions = studySessions.filter(function(session) {
+        return session.id !== id;
+    });
+
+    saveStudySessions();
+    displayStudySessions();
+});
+
+// Calculate total planned study time
+function updateStudyTime() {
+
+    const totalMinutes = studySessions.reduce(
+        function(total, session) {
+            return total + session.duration;
+        },
+        0
+    );
+
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    let result = "";
+
+    if (hours > 0) {
+        result += hours + " hr ";
+    }
+
+    result += minutes + " min";
+
+    totalStudyTime.textContent = result;
+}
+
+// Load saved sessions
+displayStudySessions();

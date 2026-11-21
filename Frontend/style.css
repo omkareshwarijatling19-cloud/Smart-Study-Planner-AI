@@ -401,3 +401,28 @@ footer {
         flex-direction: column;
     }
 }
+
+/* Day 6 - Study Schedule Improvements */
+
+#schedule {
+    margin-top: 25px;
+}
+
+#schedule .task-form {
+    margin-top: 20px;
+}
+
+#schedule .task-item {
+    border-left: 4px solid #8064e8;
+}
+
+#schedule .progress-info {
+    margin-top: 25px;
+    padding: 15px;
+    background: #f3f0ff;
+    border-radius: 10px;
+}
+
+#schedule .task-details {
+    margin: 6px 0;
+}

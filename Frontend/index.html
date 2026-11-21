@@ -24,6 +24,7 @@
                 <a href="#overview" class="nav-link active">🏠 Dashboard</a>
                 <a href="#tasks" class="nav-link">📝 My Tasks</a>
                 <a href="#progress" class="nav-link">📊 Progress</a>
+                <a href="#schedule" class="nav-link">📅 Study Schedule</a>
             </nav>
 
             <div class="sidebar-bottom">
@@ -112,6 +113,62 @@
 
             <!-- Progress -->
             <section class="content-card progress-card" id="progress">
+
+<!-- Study Schedule -->
+<section class="content-card" id="schedule">
+
+    <div class="section-heading">
+        <div>
+            <h2>My Study Schedule 📅</h2>
+            <p>Plan your daily learning sessions.</p>
+        </div>
+    </div>
+
+    <form id="scheduleForm" class="task-form">
+
+        <input
+            type="text"
+            id="subjectInput"
+            placeholder="Enter subject (e.g. Python)"
+            required
+        >
+
+        <input
+            type="text"
+            id="topicInput"
+            placeholder="Enter study topic"
+            required
+        >
+
+        <input
+            type="date"
+            id="studyDate"
+            required
+        >
+
+        <input
+            type="number"
+            id="studyDuration"
+            placeholder="Duration (minutes)"
+            min="1"
+            required
+        >
+
+        <button type="submit" class="add-button">
+            + Add Session
+        </button>
+
+    </form>
+
+    <div class="progress-info">
+        <span>Total planned study time</span>
+        <strong id="totalStudyTime">0 minutes</strong>
+    </div>
+
+    <div id="scheduleList" class="task-list"></div>
+
+</section>
+
 
                 <h2>Your Study Progress</h2>
                 <p>Keep going! Every small step matters.</p>
