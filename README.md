@@ -63,3 +63,33 @@ Additional features will be implemented in the upcoming development stages.
 ---
 Developed by **Jatling Omkareshwari**  
 UNAI TECH Virtual Internship Program 2026
+## Day 8 – Study Schedule Management Feature
+
+### Feature Overview
+The Study Schedule Management feature allows students to organize their daily learning sessions by entering subject names, topics, dates, and study durations.
+
+### Features Implemented
+1. Add study sessions.
+2. Enter subject and topic details.
+3. Select study dates.
+4. Set study duration in minutes.
+5. Delete unwanted study sessions.
+6. Automatically calculate total planned study time.
+7. Store study sessions using browser Local Storage.
+8. Display previously saved sessions after refreshing the page.
+
+### Technologies Used
+- HTML5
+- CSS3
+- JavaScript
+- Browser Local Storage
+
+### Testing
+- Tested adding study sessions.
+- Tested deleting study sessions.
+- Verified total study time calculation.
+- Checked Local Storage functionality.
+- Tested date validation.
+
+### Outcome
+Successfully implemented and integrated the Study Schedule Management feature into the Smart Study Planner AI application.
