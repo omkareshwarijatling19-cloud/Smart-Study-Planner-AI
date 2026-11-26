@@ -93,3 +93,52 @@ The Study Schedule Management feature allows students to organize their daily le
 
 ### Outcome
 Successfully implemented and integrated the Study Schedule Management feature into the Smart Study Planner AI application.
+
+## Day 9 – Database Design and Integration
+
+### Database Used
+SQLite
+
+### Backend Technology
+Python and Flask
+
+### Database Table: Tasks
+
+| Field | Data Type |
+|---|---|
+| id | INTEGER PRIMARY KEY |
+| title | TEXT |
+| subject | TEXT |
+| due_date | TEXT |
+| priority | TEXT |
+| status | TEXT |
+
+### CRUD Operations
+
+1. CREATE – Add new study tasks.
+2. READ – Retrieve saved tasks.
+3. UPDATE – Modify existing task details.
+4. DELETE – Remove tasks from the database.
+
+### Database Connectivity
+The Flask backend connects to SQLite using Python's sqlite3 module.
+
+### API Endpoints
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | /tasks | Add task |
+| GET | /tasks | Retrieve tasks |
+| PUT | /tasks/{id} | Update task |
+| DELETE | /tasks/{id} | Delete task |
+
+### Challenges Faced
+- Configuring the Flask backend.
+- Connecting Python with SQLite.
+- Testing database operations.
+- Resolving server connection errors.
+
+### Result
+Successfully implemented SQLite database connectivity
+and tested all four CRUD operations.
+
