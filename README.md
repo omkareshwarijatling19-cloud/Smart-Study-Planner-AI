@@ -142,3 +142,40 @@ The Flask backend connects to SQLite using Python's sqlite3 module.
 Successfully implemented SQLite database connectivity
 and tested all four CRUD operations.
 
+## Day 11 – Frontend and Backend Integration
+
+### Project: Smart Study Planner AI
+
+**Objective:** Integrate the frontend, Flask backend, and SQLite database.
+
+### Technologies Used
+- HTML
+- CSS
+- JavaScript
+- Python Flask
+- SQLite
+- REST API
+
+### Integration Features
+1. Connected frontend with Flask backend using Fetch API.
+2. Implemented POST API to add tasks.
+3. Implemented GET API to retrieve tasks.
+4. Implemented PUT API to update task status.
+5. Implemented DELETE API to remove tasks.
+6. Displayed database tasks on the frontend dashboard.
+7. Added API error handling and loading messages.
+
+### Complete Workflow
+User enters task details → Frontend sends API request → Flask processes the request → SQLite stores the task → Frontend displays the saved task.
+
+### Testing Results
+- Task creation: Successful
+- Task retrieval: Successful
+- Task completion and undo: Successful
+- Task deletion: Successful
+
+### Challenges Faced
+Initially, the frontend could not communicate with the backend due to API URL configuration and connection issues. These were resolved by configuring the API URL and enabling Flask-CORS.
+
+### Conclusion
+Successfully integrated the frontend, backend, and SQLite database to create a connected Smart Study Planner application.

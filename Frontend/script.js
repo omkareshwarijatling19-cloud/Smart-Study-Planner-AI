@@ -1,55 +1,100 @@
 
+const API_URL = "http://127.0.0.1:5000";
+
 const taskForm = document.getElementById("taskForm");
 const taskInput = document.getElementById("taskInput");
 const taskDate = document.getElementById("taskDate");
 const taskPriority = document.getElementById("taskPriority");
 const taskList = document.getElementById("taskList");
 
-let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+let tasks = [];
 
-// Display today's date
-const todayDate = document.getElementById("todayDate");
+// Fetch tasks from Flask backend
+async function loadTasks() {
+    taskList.innerHTML = "<p>Loading tasks...</p>";
 
-todayDate.textContent = new Date().toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric"
-});
+    try {
+        const response = await fetch(`${API_URL}/tasks`);
 
-// Save tasks
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+        if (!response.ok) {
+            throw new Error("Unable to load tasks");
+        }
+
+        const data = await response.json();
+
+        tasks = data.map(function(task) {
+            return {
+                id: task.id,
+                name: task.title,
+                date: task.due_date || "",
+                priority: task.priority || "Medium",
+                completed: task.status === "Completed"
+            };
+        });
+
+        displayTasks();
+
+    } catch (error) {
+        taskList.innerHTML =
+            '<p class="empty-message">Unable to load tasks. Please check your backend.</p>';
+        console.error(error);
+    }
 }
 
-// Add task
-taskForm.addEventListener("submit", function(event) {
+// Add task using POST API
+taskForm.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
     const task = {
-        id: Date.now(),
-        name: taskInput.value.trim(),
-        date: taskDate.value,
-        priority: taskPriority.value,
-        completed: false
+        title: taskInput.value.trim(),
+        subject: "",
+        due_date: taskDate.value,
+        priority: taskPriority.value
     };
 
-    if (!task.name || !task.date) {
+    if (!task.title || !task.due_date) {
         alert("Please enter all task details.");
         return;
     }
 
-    tasks.push(task);
+    const submitButton = taskForm.querySelector('[type="submit"]');
 
-    saveTasks();
-    displayTasks();
+    try {
+        if (submitButton) submitButton.disabled = true;
 
-    taskForm.reset();
+        const response = await fetch(`${API_URL}/tasks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(task)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to add task");
+        }
+
+        alert("Task added successfully!");
+
+        taskForm.reset();
+
+        await loadTasks();
+
+    } catch (error) {
+        alert("Error: " + error.message);
+        console.error(error);
+
+    } finally {
+        if (submitButton) submitButton.disabled = false;
+    }
 });
 
 // Prevent HTML injection
 function escapeHTML(value) {
-    return value.replace(/[&<>"']/g, function(character) {
+    return String(value ?? "").replace(/[&<>"']/g, function(character) {
         const entities = {
             "&": "&amp;",
             "<": "&lt;",
@@ -92,8 +137,8 @@ function displayTasks() {
                     Deadline: ${escapeHTML(task.date)}
                 </p>
 
-                <p class="priority ${task.priority}">
-                    ${task.priority} Priority
+                <p class="priority ${escapeHTML(task.priority)}">
+                    ${escapeHTML(task.priority)} Priority
                 </p>
             </div>
 
@@ -111,14 +156,13 @@ function displayTasks() {
         `;
 
         taskList.appendChild(taskDiv);
-
     });
 
     updateDashboard();
 }
 
-// Handle task buttons
-taskList.addEventListener("click", function(event) {
+// Update or delete tasks using API
+taskList.addEventListener("click", async function(event) {
 
     const button = event.target.closest("button[data-action]");
 
@@ -127,26 +171,55 @@ taskList.addEventListener("click", function(event) {
     const id = Number(button.dataset.id);
     const action = button.dataset.action;
 
-    if (action === "complete") {
+    const task = tasks.find(function(item) {
+        return item.id === id;
+    });
 
-        const task = tasks.find(function(item) {
-            return item.id === id;
-        });
+    if (!task) return;
 
-        if (task) {
-            task.completed = !task.completed;
+    button.disabled = true;
+
+    try {
+
+        let response;
+
+        if (action === "complete") {
+
+            response = await fetch(`${API_URL}/tasks/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: task.name,
+                    subject: "",
+                    due_date: task.date,
+                    priority: task.priority,
+                    status: task.completed ? "Pending" : "Completed"
+                })
+            });
+
+        } else if (action === "delete") {
+
+            response = await fetch(`${API_URL}/tasks/${id}`, {
+                method: "DELETE"
+            });
+
         }
 
-    } else if (action === "delete") {
+        const result = await response.json();
 
-        tasks = tasks.filter(function(item) {
-            return item.id !== id;
-        });
+        if (!response.ok) {
+            throw new Error(result.message || "Request failed");
+        }
 
+        await loadTasks();
+
+    } catch (error) {
+        alert("Error: " + error.message);
+        console.error(error);
+        button.disabled = false;
     }
-
-    saveTasks();
-    displayTasks();
 });
 
 // Update dashboard statistics
@@ -177,8 +250,9 @@ function updateDashboard() {
         percentage + "%";
 }
 
-// Load saved tasks
-displayTasks();
+// Load tasks when website opens
+loadTasks();
+
 
 // ================================
 // DAY 6 - STUDY SCHEDULE FEATURE
